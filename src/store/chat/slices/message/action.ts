@@ -392,6 +392,7 @@ export const chatMessage: StateCreator<
 
     if (isEqual(nextMap, get().messagesMap)) return;
 
+    console.log('new messages Map', structuredClone(nextMap));
     set({ messagesMap: nextMap }, false, { type: `dispatchMessage/${payload.type}`, payload });
   },
 
