@@ -1,0 +1,4 @@
+[submodule "apps/mobile"]
+	path = apps/mobile
+	url = git@github.com:lobehub/lobe-chat-react-native.git
+	branch = main
