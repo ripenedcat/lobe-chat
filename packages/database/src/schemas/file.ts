@@ -18,6 +18,7 @@ import { FileSource } from '@/types/files';
 import { idGenerator } from '../utils/idGenerator';
 import { accessedAt, createdAt, timestamps } from './_helpers';
 import { asyncTasks } from './asyncTask';
+import { documents } from './document';
 import { users } from './user';
 
 export const globalFiles = pgTable('global_files', {
@@ -36,6 +37,7 @@ export const globalFiles = pgTable('global_files', {
 export type NewGlobalFile = typeof globalFiles.$inferInsert;
 export type GlobalFileItem = typeof globalFiles.$inferSelect;
 
+// @ts-ignore
 export const files = pgTable(
   'files',
   {
@@ -61,6 +63,12 @@ export const files = pgTable(
     url: text('url').notNull(),
     source: text('source').$type<FileSource>(),
 
+    // 父文档（用于文件夹层级结构）
+    // @ts-ignore
+    parentId: varchar('parent_id', { length: 30 }).references(() => documents.id, {
+      onDelete: 'set null',
+    }),
+
     clientId: text('client_id'),
     metadata: jsonb('metadata'),
     chunkTaskId: uuid('chunk_task_id').references(() => asyncTasks.id, { onDelete: 'set null' }),
@@ -73,6 +81,7 @@ export const files = pgTable(
   (table) => {
     return {
       fileHashIdx: index('file_hash_idx').on(table.fileHash),
+      parentIdIdx: index('files_parent_id_idx').on(table.parentId),
       clientIdUnique: uniqueIndex('files_client_id_user_id_unique').on(
         table.clientId,
         table.userId,
