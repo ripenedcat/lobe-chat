@@ -90,7 +90,7 @@ export const DEFAULT_FEATURE_FLAGS: IFeatureFlags = {
   welcome_suggest: true,
   token_counter: true,
 
-  knowledge_base: false,
+  knowledge_base: true,
   rag_eval: false,
 
   clerk_sign_up: true,

@@ -1,5 +1,5 @@
 import { ActionIcon, ActionIconProps, Hotkey } from '@lobehub/ui';
-import { Compass, FolderClosed, MessageSquare, Palette } from 'lucide-react';
+import { Compass, MessageSquare, Palette } from 'lucide-react';
 import Link from 'next/link';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,15 +28,10 @@ export interface TopActionProps {
 const TopActions = memo<TopActionProps>(({ tab, isPinned }) => {
   const { t } = useTranslation('common');
   const switchBackToChat = useGlobalStore((s) => s.switchBackToChat);
-  const { showMarket, enableKnowledgeBase, showAiImage } =
-    useServerConfigStore(featureFlagsSelectors);
+  const { showMarket, showAiImage } = useServerConfigStore(featureFlagsSelectors);
   const hotkey = useUserStore(settingsSelectors.getHotkeyById(HotkeyEnum.NavigateToChat));
 
-  // Check if server mode is enabled
-  const isServerMode = process.env.NEXT_PUBLIC_SERVICE_MODE === 'server';
-
   const isChatActive = tab === SidebarTabKey.Chat && !isPinned;
-  const isFilesActive = tab === SidebarTabKey.Files;
   const isDiscoverActive = tab === SidebarTabKey.Discover;
   const isImageActive = tab === SidebarTabKey.Image;
 
@@ -69,7 +64,8 @@ const TopActions = memo<TopActionProps>(({ tab, isPinned }) => {
           tooltipProps={{ placement: 'right' }}
         />
       </Link>
-      {enableKnowledgeBase && isServerMode && (
+      {/* Knowledge Base button hidden */}
+      {/* {enableKnowledgeBase && isServerMode && (
         <Link aria-label={t('tab.knowledgeBase')} href={'/knowledge'}>
           <ActionIcon
             active={isFilesActive}
@@ -79,7 +75,7 @@ const TopActions = memo<TopActionProps>(({ tab, isPinned }) => {
             tooltipProps={{ placement: 'right' }}
           />
         </Link>
-      )}
+      )} */}
       {showAiImage && (
         <Link aria-label={t('tab.aiImage')} href={'/image'}>
           <ActionIcon
