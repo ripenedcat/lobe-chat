@@ -15,6 +15,7 @@ import { sessionSelectors } from '@/store/session/selectors';
 import { useUserStore } from '@/store/user';
 import { authSelectors } from '@/store/user/selectors';
 
+import CollectionTag from './CollectionTag';
 import HistoryLimitTags from './HistoryLimitTags';
 import KnowledgeTag from './KnowledgeTag';
 import MemberCountTag from './MemberCountTag';
@@ -53,6 +54,7 @@ const TitleTags = memo(() => {
       <ModelSwitchPanel>
         <ModelTag model={model} />
       </ModelSwitchPanel>
+      <CollectionTag />
       {isAgentEnableSearch && <SearchTags />}
       {showPlugin && plugins?.length > 0 && <PluginTag plugins={plugins} />}
       {hasKnowledge && <KnowledgeTag data={enabledKnowledge} />}

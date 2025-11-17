@@ -18,6 +18,9 @@
     },
     "title": "Analytics"
   },
+  "collection": {
+    "title": "Collection"
+  },
   "danger": {
     "clear": {
       "action": "Clear Now",

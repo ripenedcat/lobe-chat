@@ -18,6 +18,9 @@ export default {
     },
     title: '数据统计',
   },
+  collection: {
+    title: '知识库',
+  },
   danger: {
     clear: {
       action: '立即清除',

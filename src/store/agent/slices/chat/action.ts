@@ -42,6 +42,7 @@ export interface AgentChatAction {
   removeKnowledgeBaseFromAgent: (knowledgeBaseId: string) => Promise<void>;
 
   removePlugin: (id: string) => void;
+  setCollection: (collection: string) => Promise<void>;
   toggleFile: (id: string, open?: boolean) => Promise<void>;
   toggleKnowledgeBase: (id: string, open?: boolean) => Promise<void>;
 
@@ -101,6 +102,9 @@ export const createChatSlice: StateCreator<
 
   removePlugin: async (id) => {
     await get().togglePlugin(id, false);
+  },
+  setCollection: async (collection) => {
+    await get().updateAgentConfig({ collection });
   },
   toggleFile: async (id, open) => {
     const { activeAgentId, internal_refreshAgentConfig } = get();

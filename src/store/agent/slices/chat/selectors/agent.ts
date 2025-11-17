@@ -68,6 +68,12 @@ const currentAgentPlugins = (s: AgentStoreState) => {
   return config?.plugins || [];
 };
 
+const currentAgentCollection = (s: AgentStoreState) => {
+  const config = currentAgentConfig(s);
+
+  return config?.collection || 'azure_monitor';
+};
+
 /**
  * Get displayable agent plugins by filtering out platform-specific tools
  * that shouldn't be shown in the current environment
@@ -170,6 +176,7 @@ const openingQuestions = (s: AgentStoreState) =>
 const openingMessage = (s: AgentStoreState) => currentAgentConfig(s).openingMessage || '';
 
 export const agentSelectors = {
+  currentAgentCollection,
   currentAgentConfig,
   currentAgentFiles,
   currentAgentKnowledgeBases,

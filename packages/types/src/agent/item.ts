@@ -8,6 +8,10 @@ import { LobeAgentTTSConfig } from './tts';
 
 export interface LobeAgentConfig {
   chatConfig: LobeAgentChatConfig;
+  /**
+   * Selected collection for context
+   */
+  collection?: string;
   fewShots?: FewShots;
   files?: FileItem[];
   id?: string;
@@ -15,25 +19,26 @@ export interface LobeAgentConfig {
    * knowledge bases
    */
   knowledgeBases?: KnowledgeBaseItem[];
+
   /**
    * 角色所使用的语言模型
    * @default gpt-4o-mini
    */
   model: string;
-
   /**
    * 开场白
    */
   openingMessage?: string;
+
   /**
    * 开场问题
    */
   openingQuestions?: string[];
-
   /**
    * 语言模型参数
    */
   params: LLMParams;
+
   /**
    * 启用的插件
    */
@@ -70,6 +75,7 @@ export interface AgentItem {
   backgroundColor?: string | null;
   chatConfig?: LobeAgentChatConfig | null;
   clientId?: string | null;
+  collection?: string | null;
   createdAt: Date;
   description?: string | null;
   fewShots?: any | null;

@@ -1,4 +1,5 @@
 import Clear from './Clear';
+import Collection from './Collection';
 import History from './History';
 import Knowledge from './Knowledge';
 import Mention from './Mention';
@@ -14,6 +15,7 @@ import Upload from './Upload';
 
 export const actionMap = {
   clear: Clear,
+  collection: Collection,
   fileUpload: Upload,
   groupChatToken: GroupChatToken,
   history: History,

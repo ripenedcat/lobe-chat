@@ -28,15 +28,6 @@ const BottomActions = memo(() => {
           />
         </Link>
       )}
-      {/* Labs button disabled */}
-      {/* <Link aria-label={t('labs')} href={'/labs'}>
-        <ActionIcon
-          icon={FlaskConical}
-          size={ICON_SIZE}
-          title={t('labs')}
-          tooltipProps={{ placement: 'right' }}
-        />
-      </Link> */}
     </Flexbox>
   );
 });
