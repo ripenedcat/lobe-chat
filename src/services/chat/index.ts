@@ -108,6 +108,13 @@ class ChatService {
     const agentConfig = agentSelectors.currentAgentConfig(agentStoreState);
     const chatConfig = agentChatConfigSelectors.currentChatConfig(agentStoreState);
 
+    // Add collection information to system role
+    let systemRole = agentConfig.systemRole;
+    if (agentConfig.collection) {
+      const collectionContext = `\n\n[System Context: Current knowledge base collection is "${agentConfig.collection}"]`;
+      systemRole = systemRole ? systemRole + collectionContext : collectionContext;
+    }
+
     // Apply context engineering with preprocessing configuration
     const oaiMessages = await contextEngineering({
       enableHistoryCount: agentChatConfigSelectors.enableHistoryCount(agentStoreState),
@@ -120,7 +127,7 @@ class ChatService {
       model: payload.model,
       provider: payload.provider!,
       sessionId: options?.trace?.sessionId,
-      systemRole: agentConfig.systemRole,
+      systemRole: systemRole,
       tools: enabledToolIds,
     });
 
