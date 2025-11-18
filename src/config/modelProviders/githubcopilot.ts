@@ -30,11 +30,11 @@ const GithubCopilot: ModelProviderCard = {
   id: 'githubcopilot',
   name: 'GitHub Copilot',
   proxyUrl: {
-    placeholder: 'http://52.163.124.133:14141',
+    placeholder: 'https://api.example.com',
   },
   settings: {
     proxyUrl: {
-      placeholder: 'http://52.163.124.133:14141',
+      placeholder: 'https://api.example.com',
     },
     sdkType: 'anthropic',
     showApiKey: true,

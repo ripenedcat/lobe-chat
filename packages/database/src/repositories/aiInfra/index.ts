@@ -91,6 +91,7 @@ const injectSearchSettings = (providerId: string, item: any) => {
     if (item?.settings?.searchImpl || item?.settings?.searchProvider) {
       const next = { ...item } as any;
       if (next.settings) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { searchImpl, searchProvider, ...restSettings } = next.settings;
         next.settings = Object.keys(restSettings).length > 0 ? restSettings : undefined;
       }
@@ -152,7 +153,8 @@ export class AiInfraRepos {
       description: item.description,
       enabled:
         userProviders.some((provider) => provider.id === item.id && provider.enabled) ||
-        this.providerConfigs[item.id]?.enabled,
+        this.providerConfigs[item.id]?.enabled ||
+        item.enabled, // Use enabled from ModelProviderCard if not set in user config or provider config
       id: item.id,
       name: item.name,
       source: 'builtin',

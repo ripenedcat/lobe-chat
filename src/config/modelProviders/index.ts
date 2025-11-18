@@ -1,23 +1,14 @@
 import { ChatModelCard, ModelProviderCard } from '@/types/llm';
 
 import Ai21Provider from './ai21';
-import Ai302Provider from './ai302';
 import Ai360Provider from './ai360';
 import AiHubMixProvider from './aihubmix';
-import AkashChatProvider from './akashchat';
 import AnthropicProvider from './anthropic';
-import AzureProvider from './azure';
-import AzureAIProvider from './azureai';
 import BaichuanProvider from './baichuan';
 import BedrockProvider from './bedrock';
-import BflProvider from './bfl';
-import CerebrasProvider from './cerebras';
 import CloudflareProvider from './cloudflare';
 import CohereProvider from './cohere';
-import CometAPIProvider from './cometapi';
-import ComfyUIProvider from './comfyui';
 import DeepSeekProvider from './deepseek';
-import FalProvider from './fal';
 import FireworksAIProvider from './fireworksai';
 import GiteeAIProvider from './giteeai';
 import GithubProvider from './github';
@@ -30,17 +21,13 @@ import HunyuanProvider from './hunyuan';
 import InfiniAIProvider from './infiniai';
 import InternLMProvider from './internlm';
 import JinaProvider from './jina';
-import LMStudioProvider from './lmstudio';
 import MinimaxProvider from './minimax';
 import MistralProvider from './mistral';
 import ModelScopeProvider from './modelscope';
 import MoonshotProvider from './moonshot';
-import NebiusProvider from './nebius';
-import NewAPIProvider from './newapi';
 import NovitaProvider from './novita';
 import NvidiaProvider from './nvidia';
 import OllamaProvider from './ollama';
-import OllamaCloudProvider from './ollamacloud';
 import OpenAIProvider from './openai';
 import OpenRouterProvider from './openrouter';
 import PerplexityProvider from './perplexity';
@@ -54,14 +41,11 @@ import SiliconCloudProvider from './siliconcloud';
 import SparkProvider from './spark';
 import StepfunProvider from './stepfun';
 import TaichuProvider from './taichu';
-import TencentcloudProvider from './tencentcloud';
 import TogetherAIProvider from './togetherai';
 import UpstageProvider from './upstage';
 import V0Provider from './v0';
 import VercelAIGatewayProvider from './vercelaigateway';
-import VertexAIProvider from './vertexai';
 import VLLMProvider from './vllm';
-import VolcengineProvider from './volcengine';
 import WenxinProvider from './wenxin';
 import XAIProvider from './xai';
 import XinferenceProvider from './xinference';
@@ -125,75 +109,7 @@ export const LOBE_DEFAULT_MODEL_LIST: ChatModelCard[] = [
   VercelAIGatewayProvider.chatModels,
 ].flat();
 
-export const DEFAULT_MODEL_PROVIDER_LIST = [
-  GithubCopilotProvider,
-  OpenAIProvider,
-  { ...AzureProvider, chatModels: [] },
-  AzureAIProvider,
-  OllamaProvider,
-  OllamaCloudProvider,
-  VLLMProvider,
-  ComfyUIProvider,
-  XinferenceProvider,
-  AnthropicProvider,
-  BedrockProvider,
-  GoogleProvider,
-  VertexAIProvider,
-  DeepSeekProvider,
-  MoonshotProvider,
-  AiHubMixProvider,
-  OpenRouterProvider,
-  FalProvider,
-  HuggingFaceProvider,
-  CloudflareProvider,
-  GithubProvider,
-  NewAPIProvider,
-  BflProvider,
-  NovitaProvider,
-  PPIOProvider,
-  Ai302Provider,
-  NvidiaProvider,
-  TogetherAIProvider,
-  FireworksAIProvider,
-  GroqProvider,
-  PerplexityProvider,
-  MistralProvider,
-  ModelScopeProvider,
-  Ai21Provider,
-  UpstageProvider,
-  XAIProvider,
-  JinaProvider,
-  SambaNovaProvider,
-  CohereProvider,
-  V0Provider,
-  QwenProvider,
-  WenxinProvider,
-  TencentcloudProvider,
-  HunyuanProvider,
-  ZhiPuProvider,
-  SiliconCloudProvider,
-  ZeroOneProvider,
-  SparkProvider,
-  SenseNovaProvider,
-  StepfunProvider,
-  BaichuanProvider,
-  VolcengineProvider,
-  MinimaxProvider,
-  LMStudioProvider,
-  InternLMProvider,
-  HigressProvider,
-  GiteeAIProvider,
-  TaichuProvider,
-  Ai360Provider,
-  Search1APIProvider,
-  InfiniAIProvider,
-  AkashChatProvider,
-  QiniuProvider,
-  NebiusProvider,
-  CometAPIProvider,
-  VercelAIGatewayProvider,
-  CerebrasProvider,
-];
+export const DEFAULT_MODEL_PROVIDER_LIST = [GithubCopilotProvider];
 
 export const filterEnabledModels = (provider: ModelProviderCard) => {
   return provider.chatModels.filter((v) => v.enabled).map((m) => m.id);
