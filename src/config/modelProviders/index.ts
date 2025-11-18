@@ -21,6 +21,7 @@ import FalProvider from './fal';
 import FireworksAIProvider from './fireworksai';
 import GiteeAIProvider from './giteeai';
 import GithubProvider from './github';
+import GithubCopilotProvider from './githubcopilot';
 import GoogleProvider from './google';
 import GroqProvider from './groq';
 import HigressProvider from './higress';
@@ -91,6 +92,7 @@ export const LOBE_DEFAULT_MODEL_LIST: ChatModelCard[] = [
   FireworksAIProvider.chatModels,
   PerplexityProvider.chatModels,
   AnthropicProvider.chatModels,
+  GithubCopilotProvider.chatModels,
   HuggingFaceProvider.chatModels,
   XAIProvider.chatModels,
   JinaProvider.chatModels,
@@ -124,6 +126,7 @@ export const LOBE_DEFAULT_MODEL_LIST: ChatModelCard[] = [
 ].flat();
 
 export const DEFAULT_MODEL_PROVIDER_LIST = [
+  GithubCopilotProvider,
   OpenAIProvider,
   { ...AzureProvider, chatModels: [] },
   AzureAIProvider,

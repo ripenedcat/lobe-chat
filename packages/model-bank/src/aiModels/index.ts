@@ -20,6 +20,7 @@ import { default as fal } from './fal';
 import { default as fireworksai } from './fireworksai';
 import { default as giteeai } from './giteeai';
 import { default as github } from './github';
+import { default as githubcopilot } from './githubcopilot';
 import { default as google } from './google';
 import { default as groq } from './groq';
 import { default as higress } from './higress';
@@ -107,6 +108,7 @@ export const LOBE_DEFAULT_MODEL_LIST = buildDefaultModelList({
   fireworksai,
   giteeai,
   github,
+  githubcopilot,
   google,
   groq,
   higress,
@@ -175,6 +177,7 @@ export { default as fal, fluxSchnellParamsSchema } from './fal';
 export { default as fireworksai } from './fireworksai';
 export { default as giteeai } from './giteeai';
 export { default as github } from './github';
+export { default as githubcopilot } from './githubcopilot';
 export { default as google } from './google';
 export { default as groq } from './groq';
 export { default as higress } from './higress';

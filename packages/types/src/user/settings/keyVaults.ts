@@ -72,6 +72,7 @@ export interface UserKeyVaults extends SearchEngineKeyVaults {
   fireworksai?: OpenAICompatibleKeyVault;
   giteeai?: OpenAICompatibleKeyVault;
   github?: OpenAICompatibleKeyVault;
+  githubcopilot?: OpenAICompatibleKeyVault;
   google?: OpenAICompatibleKeyVault;
   groq?: OpenAICompatibleKeyVault;
   higress?: OpenAICompatibleKeyVault;

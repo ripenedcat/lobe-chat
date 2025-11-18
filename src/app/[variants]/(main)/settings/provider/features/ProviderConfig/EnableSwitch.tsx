@@ -28,6 +28,9 @@ const Switch = ({ id, Component }: SwitchProps) => {
     aiProviderSelectors.isAiProviderConfigLoading(id)(s),
   ]);
 
+  // GitHub Copilot provider is always enabled and cannot be disabled
+  if (id === 'githubcopilot') return null;
+
   if (isLoading) return <Skeleton.Button active className={styles.switchLoading} />;
 
   // slot for cloud
