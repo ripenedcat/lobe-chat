@@ -271,7 +271,9 @@ export class SessionModel {
     if (item) return;
 
     return await this.create({
-      config: merge(DEFAULT_AGENT_CONFIG, defaultAgentConfig),
+      config: merge(DEFAULT_AGENT_CONFIG, defaultAgentConfig, {
+        collection: 'azure_monitor',
+      }),
       slug: INBOX_SESSION_ID,
       type: 'agent',
     });
