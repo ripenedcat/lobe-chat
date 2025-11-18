@@ -18,6 +18,9 @@ export default {
     },
     title: '数据统计',
   },
+  checkpointWeek: {
+    title: 'Checkpoint 周期',
+  },
   collection: {
     title: '知识库',
   },

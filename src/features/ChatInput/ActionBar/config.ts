@@ -1,3 +1,4 @@
+import CheckpointWeek from './CheckpointWeek';
 import Clear from './Clear';
 import Collection from './Collection';
 import History from './History';
@@ -14,6 +15,7 @@ import Typo from './Typo';
 import Upload from './Upload';
 
 export const actionMap = {
+  checkpointWeek: CheckpointWeek,
   clear: Clear,
   collection: Collection,
   fileUpload: Upload,

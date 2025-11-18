@@ -38,6 +38,7 @@ export const DEFAULT_AGENT_CHAT_CONFIG: LobeAgentChatConfig = {
 
 export const DEFAULT_AGENT_CONFIG: LobeAgentConfig = {
   chatConfig: DEFAULT_AGENT_CHAT_CONFIG,
+  checkpointWeek: 'Checkpoint Week1',
   collection: 'azure_monitor',
   model: DEFAULT_MODEL,
   openingQuestions: [],

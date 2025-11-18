@@ -15,6 +15,7 @@ import { sessionSelectors } from '@/store/session/selectors';
 import { useUserStore } from '@/store/user';
 import { authSelectors } from '@/store/user/selectors';
 
+import CheckpointWeekTag from './CheckpointWeekTag';
 import CollectionTag from './CollectionTag';
 import HistoryLimitTags from './HistoryLimitTags';
 import KnowledgeTag from './KnowledgeTag';
@@ -55,6 +56,7 @@ const TitleTags = memo(() => {
         <ModelTag model={model} />
       </ModelSwitchPanel>
       <CollectionTag />
+      <CheckpointWeekTag />
       {isAgentEnableSearch && <SearchTags />}
       {showPlugin && plugins?.length > 0 && <PluginTag plugins={plugins} />}
       {hasKnowledge && <KnowledgeTag data={enabledKnowledge} />}

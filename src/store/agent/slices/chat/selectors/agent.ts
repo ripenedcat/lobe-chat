@@ -74,6 +74,12 @@ const currentAgentCollection = (s: AgentStoreState) => {
   return config?.collection || 'azure_monitor';
 };
 
+const currentAgentCheckpointWeek = (s: AgentStoreState) => {
+  const config = currentAgentConfig(s);
+
+  return config?.checkpointWeek || 'Checkpoint Week1';
+};
+
 /**
  * Get displayable agent plugins by filtering out platform-specific tools
  * that shouldn't be shown in the current environment
@@ -176,6 +182,7 @@ const openingQuestions = (s: AgentStoreState) =>
 const openingMessage = (s: AgentStoreState) => currentAgentConfig(s).openingMessage || '';
 
 export const agentSelectors = {
+  currentAgentCheckpointWeek,
   currentAgentCollection,
   currentAgentConfig,
   currentAgentFiles,

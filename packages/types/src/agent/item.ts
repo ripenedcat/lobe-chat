@@ -9,6 +9,10 @@ import { LobeAgentTTSConfig } from './tts';
 export interface LobeAgentConfig {
   chatConfig: LobeAgentChatConfig;
   /**
+   * Selected checkpoint week
+   */
+  checkpointWeek?: string;
+  /**
    * Selected collection for context
    */
   collection?: string;
@@ -74,6 +78,7 @@ export interface AgentItem {
   avatar?: string | null;
   backgroundColor?: string | null;
   chatConfig?: LobeAgentChatConfig | null;
+  checkpointWeek?: string | null;
   clientId?: string | null;
   collection?: string | null;
   createdAt: Date;

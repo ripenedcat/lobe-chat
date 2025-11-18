@@ -272,6 +272,7 @@ export class SessionModel {
 
     return await this.create({
       config: merge(DEFAULT_AGENT_CONFIG, defaultAgentConfig, {
+        checkpointWeek: 'Checkpoint Week1',
         collection: 'azure_monitor',
       }),
       slug: INBOX_SESSION_ID,
@@ -318,6 +319,7 @@ export class SessionModel {
         if (!existingItem) {
           const session = await this.create({
             config: merge(DEFAULT_AGENT_CONFIG, defaultAgentConfig, assistant.config, {
+              checkpointWeek: 'Checkpoint Week1',
               collection: 'azure_monitor',
             }),
             session: {

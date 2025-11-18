@@ -108,11 +108,15 @@ class ChatService {
     const agentConfig = agentSelectors.currentAgentConfig(agentStoreState);
     const chatConfig = agentChatConfigSelectors.currentChatConfig(agentStoreState);
 
-    // Add collection information to system role
+    // Add collection and checkpoint week information to system role
     let systemRole = agentConfig.systemRole;
     if (agentConfig.collection) {
       const collectionContext = `\n\n[System Context: Current knowledge base collection is "${agentConfig.collection}"]`;
       systemRole = systemRole ? systemRole + collectionContext : collectionContext;
+    }
+    if (agentConfig.checkpointWeek) {
+      const checkpointWeekContext = `\n\n[System Context: Current checkpoint week is "${agentConfig.checkpointWeek}"]`;
+      systemRole = systemRole ? systemRole + checkpointWeekContext : checkpointWeekContext;
     }
 
     // Apply context engineering with preprocessing configuration

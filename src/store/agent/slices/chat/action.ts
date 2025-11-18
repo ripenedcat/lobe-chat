@@ -42,6 +42,7 @@ export interface AgentChatAction {
   removeKnowledgeBaseFromAgent: (knowledgeBaseId: string) => Promise<void>;
 
   removePlugin: (id: string) => void;
+  setCheckpointWeek: (checkpointWeek: string) => Promise<void>;
   setCollection: (collection: string) => Promise<void>;
   toggleFile: (id: string, open?: boolean) => Promise<void>;
   toggleKnowledgeBase: (id: string, open?: boolean) => Promise<void>;
@@ -102,6 +103,9 @@ export const createChatSlice: StateCreator<
 
   removePlugin: async (id) => {
     await get().togglePlugin(id, false);
+  },
+  setCheckpointWeek: async (checkpointWeek) => {
+    await get().updateAgentConfig({ checkpointWeek });
   },
   setCollection: async (collection) => {
     await get().updateAgentConfig({ collection });

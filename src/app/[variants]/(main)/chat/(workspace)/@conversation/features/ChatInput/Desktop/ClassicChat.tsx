@@ -22,6 +22,7 @@ const leftActions: ActionKeys[] = [
   'knowledgeBase',
   'tools',
   'collection',
+  'checkpointWeek',
   '---',
   ['params', 'history', 'stt', 'clear'],
   'mainToken',
