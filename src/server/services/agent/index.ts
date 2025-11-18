@@ -17,4 +17,10 @@ export class AgentService {
     const defaultAgentConfig = getServerDefaultAgentConfig();
     await sessionModel.createInbox(defaultAgentConfig);
   }
+
+  async createDefaultAssistants() {
+    const sessionModel = new SessionModel(this.db, this.userId);
+    const defaultAgentConfig = getServerDefaultAgentConfig();
+    await sessionModel.createDefaultAssistants(defaultAgentConfig);
+  }
 }

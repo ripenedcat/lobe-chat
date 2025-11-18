@@ -54,6 +54,9 @@ export class UserService {
     const agentService = new AgentService(this.db, id);
     await agentService.createInbox();
 
+    // 4. Create default assistants for the user
+    await agentService.createDefaultAssistants();
+
     /* ↓ cloud slot ↓ */
 
     /* ↑ cloud slot ↑ */

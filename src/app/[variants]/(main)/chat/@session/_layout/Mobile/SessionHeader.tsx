@@ -28,6 +28,8 @@ const Header = memo(() => {
         </Flexbox>
       }
       right={
+        // Disabled: New assistants are not allowed
+        false &&
         showCreateSession && (
           <ActionIcon
             icon={MessageSquarePlus}

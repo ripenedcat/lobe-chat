@@ -218,7 +218,9 @@ const Header = memo(() => {
         </Flexbox>
         <Flexbox align={'center'} gap={4} horizontal>
           <TogglePanelButton />
-          {showCreateSession &&
+          {/* Disabled: New assistants are not allowed */}
+          {false &&
+            showCreateSession &&
             (enableGroupChat ? (
               <Dropdown
                 menu={{

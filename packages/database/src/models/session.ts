@@ -277,6 +277,69 @@ export class SessionModel {
     });
   };
 
+  createDefaultAssistants = async (defaultAgentConfig: PartialDeep<LobeAgentConfig>) => {
+    const DEFAULT_ASSISTANTS = [
+      {
+        config: {
+          systemRole:
+            'You are a Readiness Plan Agent. Your role is to help users create comprehensive readiness plans.',
+        },
+        slug: 'readiness-plan-agent',
+        title: 'Readiness Plan Agent',
+      },
+      {
+        config: {
+          systemRole:
+            'You are a Checkpoint Agent. Your role is to help users track progress and verify completion of tasks.',
+        },
+        slug: 'checkpoint-agent',
+        title: 'Checkpoint Agent',
+      },
+      {
+        config: {
+          systemRole:
+            'You are a QA Agent. Your role is to help users with quality assurance and testing.',
+        },
+        slug: 'qa-agent',
+        title: 'QA Agent',
+      },
+    ];
+
+    const createdSessions = [];
+
+    for (const assistant of DEFAULT_ASSISTANTS) {
+      try {
+        const existingItem = await this.db.query.sessions.findFirst({
+          where: and(eq(sessions.userId, this.userId), eq(sessions.slug, assistant.slug)),
+        });
+
+        if (!existingItem) {
+          const session = await this.create({
+            config: merge(DEFAULT_AGENT_CONFIG, defaultAgentConfig, assistant.config, {
+              collection: 'azure_monitor',
+            }),
+            session: {
+              title: assistant.title,
+            },
+            slug: assistant.slug,
+            type: 'agent',
+          });
+          createdSessions.push(session);
+        }
+      } catch (error: any) {
+        // Ignore duplicate key errors (code 23505) - this means the assistant already exists
+        // This can happen due to race conditions when multiple requests try to create at the same time
+        if (error?.cause?.code !== '23505') {
+          // Re-throw if it's not a duplicate key error
+          throw error;
+        }
+        // If it's a duplicate key error, just continue to the next assistant
+      }
+    }
+
+    return createdSessions;
+  };
+
   batchCreate = async (newSessions: NewSession[]) => {
     const sessionsToInsert = newSessions.map((s) => {
       return {

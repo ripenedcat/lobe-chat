@@ -136,6 +136,9 @@ export class NextAuthUserService {
     const agentService = new AgentService(this.db, uid);
     await agentService.createInbox();
 
+    // 4. Create default assistants for the user
+    await agentService.createDefaultAssistants();
+
     return { ...user, id: uid };
   };
 

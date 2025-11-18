@@ -103,6 +103,11 @@ export const sessionRouter = router({
     const sessionModel = new SessionModel(serverDB, ctx.userId!);
     const chatGroupModel = new ChatGroupModel(serverDB, ctx.userId!);
 
+    // Ensure default assistants exist for this user
+    const {AgentService} = await import('@/server/services/agent');
+    const agentService = new AgentService(serverDB, ctx.userId!);
+    await agentService.createDefaultAssistants();
+
     const { sessions, sessionGroups } = await sessionModel.queryWithGroups();
     const chatGroups = await chatGroupModel.queryWithMemberDetails();
 

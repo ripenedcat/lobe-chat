@@ -20,8 +20,8 @@ import { useTranslation } from 'react-i18next';
 
 import { isDesktop, isServerMode } from '@/const/version';
 import { configService } from '@/services/config';
-import { useGlobalStore } from '@/store/global';
 import { useChatGroupStore } from '@/store/chatGroup';
+import { useGlobalStore } from '@/store/global';
 import { useSessionStore } from '@/store/session';
 import { sessionHelpers } from '@/store/session/helpers';
 import { sessionGroupSelectors, sessionSelectors } from '@/store/session/selectors';
@@ -67,6 +67,15 @@ const Actions = memo<ActionProps>(({ group, id, openCreateGroupModal, parentType
 
   const isDefault = group === SessionDefaultGroup.Default;
   // const hasDivider = !isDefault || Object.keys(sessionByGroup).length > 0;
+
+  // Check if this is a default assistant that cannot be deleted
+  const session = useSessionStore((s) => sessionSelectors.getSessionById(id)(s));
+  const DEFAULT_ASSISTANT_SLUGS = ['readiness-plan-agent', 'checkpoint-agent', 'qa-agent'];
+  const isDefaultAssistant =
+    session &&
+    'slug' in session &&
+    typeof session.slug === 'string' &&
+    DEFAULT_ASSISTANT_SLUGS.includes(session.slug);
 
   const items = useMemo(
     () =>
@@ -171,7 +180,8 @@ const Actions = memo<ActionProps>(({ group, id, openCreateGroupModal, parentType
                 key: 'export',
                 label: t('export', { ns: 'common' }),
               },
-          {
+          // Only show delete option if not a default assistant
+          !isDefaultAssistant && {
             danger: true,
             icon: <Icon icon={Trash} />,
             key: 'delete',
@@ -200,7 +210,7 @@ const Actions = memo<ActionProps>(({ group, id, openCreateGroupModal, parentType
           },
         ] as ItemType[]
       ).filter(Boolean),
-    [id, pin, openSessionInNewWindow],
+    [id, pin, openSessionInNewWindow, isDefaultAssistant],
   );
 
   return (
