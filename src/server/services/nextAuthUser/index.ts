@@ -139,6 +139,9 @@ export class NextAuthUserService {
     // 4. Create default assistants for the user
     await agentService.createDefaultAssistants();
 
+    // 5. Initialize GitHub Copilot provider with default API key
+    await agentService.initializeGithubCopilotProvider();
+
     return { ...user, id: uid };
   };
 

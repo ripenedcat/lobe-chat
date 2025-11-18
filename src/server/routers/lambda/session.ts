@@ -103,10 +103,11 @@ export const sessionRouter = router({
     const sessionModel = new SessionModel(serverDB, ctx.userId!);
     const chatGroupModel = new ChatGroupModel(serverDB, ctx.userId!);
 
-    // Ensure default assistants exist for this user
-    const {AgentService} = await import('@/server/services/agent');
+    // Ensure default assistants and GitHub Copilot provider exist for this user
+    const { AgentService } = await import('@/server/services/agent');
     const agentService = new AgentService(serverDB, ctx.userId!);
     await agentService.createDefaultAssistants();
+    await agentService.initializeGithubCopilotProvider();
 
     const { sessions, sessionGroups } = await sessionModel.queryWithGroups();
     const chatGroups = await chatGroupModel.queryWithMemberDetails();
