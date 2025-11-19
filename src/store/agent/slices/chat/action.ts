@@ -127,6 +127,13 @@ export const createChatSlice: StateCreator<
     await internal_refreshAgentConfig(get().activeId);
   },
   togglePlugin: async (id, open) => {
+    // Prevent disabling built-in Milvus MCP server
+    const MILVUS_MCP_IDENTIFIER = 'milvus-mcp-http';
+    if (id === MILVUS_MCP_IDENTIFIER && open === false) {
+      console.warn('[togglePlugin] Cannot disable built-in Milvus MCP server');
+      return;
+    }
+
     const originConfig = agentSelectors.currentAgentConfig(get());
 
     const config = produce(originConfig, (draft) => {

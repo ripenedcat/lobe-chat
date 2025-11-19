@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react';
 
 import { mcpService } from '@/services/mcp';
 import { pluginService } from '@/services/plugin';
+import { useAgentStore } from '@/store/agent';
+import { agentSelectors } from '@/store/agent/selectors';
 import { useToolStore } from '@/store/tool';
 import { pluginSelectors } from '@/store/tool/selectors';
 import { MILVUS_MCP_IDENTIFIER, MilvusMCPTool } from '@/tools/milvus-mcp';
@@ -11,6 +13,7 @@ export const useInitializeMilvusMCP = () => {
   const installedPlugin = useToolStore((s) =>
     pluginSelectors.getInstalledPluginById(MILVUS_MCP_IDENTIFIER)(s),
   );
+  const currentPlugins = useAgentStore((s) => agentSelectors.currentAgentPlugins(s));
 
   useEffect(() => {
     const initializeMilvusMCP = async () => {
@@ -24,6 +27,11 @@ export const useInitializeMilvusMCP = () => {
         installedPlugin.manifest.api.length > 0
       ) {
         initialized.current = true;
+
+        // Ensure the plugin is always enabled
+        if (!currentPlugins.includes(MILVUS_MCP_IDENTIFIER)) {
+          await useAgentStore.getState().togglePlugin(MILVUS_MCP_IDENTIFIER, true);
+        }
         return;
       }
 
@@ -51,6 +59,9 @@ export const useInitializeMilvusMCP = () => {
         // Refresh plugins list
         await useToolStore.getState().refreshPlugins();
 
+        // Enable the plugin by default
+        await useAgentStore.getState().togglePlugin(MILVUS_MCP_IDENTIFIER, true);
+
         console.log('[useInitializeMilvusMCP] Milvus MCP server initialized successfully');
       } catch (error) {
         console.error('[useInitializeMilvusMCP] Failed to initialize Milvus MCP:', error);
@@ -59,5 +70,5 @@ export const useInitializeMilvusMCP = () => {
     };
 
     initializeMilvusMCP();
-  }, [installedPlugin]);
+  }, [installedPlugin, currentPlugins]);
 };
