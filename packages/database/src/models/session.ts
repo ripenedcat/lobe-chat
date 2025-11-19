@@ -284,6 +284,7 @@ export class SessionModel {
     const DEFAULT_ASSISTANTS = [
       {
         config: {
+          avatar: '😀',
           systemRole:
             'You are a Readiness Plan Agent. Your role is to help users create comprehensive readiness plans.',
         },
@@ -292,6 +293,7 @@ export class SessionModel {
       },
       {
         config: {
+          avatar: '😆',
           systemRole:
             'You are a Checkpoint Agent. Your role is to help users track progress and verify completion of tasks.',
         },
@@ -300,6 +302,7 @@ export class SessionModel {
       },
       {
         config: {
+          avatar: '😉',
           systemRole:
             'You are a QA Agent. Your role is to help users with quality assurance and testing.',
         },
@@ -342,6 +345,59 @@ export class SessionModel {
     }
 
     return createdSessions;
+  };
+
+  updateDefaultAssistantsAvatars = async () => {
+    const AVATAR_MAPPINGS: Record<string, string> = {
+      'checkpoint-agent': '😆',
+      'qa-agent': '😉',
+      'readiness-plan-agent': '😀',
+    };
+
+    console.log('[updateDefaultAssistantsAvatars] Starting avatar updates for user:', this.userId);
+
+    for (const [slug, avatar] of Object.entries(AVATAR_MAPPINGS)) {
+      try {
+        const session = await this.db.query.sessions.findFirst({
+          where: and(eq(sessions.userId, this.userId), eq(sessions.slug, slug)),
+          with: {
+            agentsToSessions: {
+              with: {
+                agent: true,
+              },
+            },
+          },
+        });
+
+        if (!session) {
+          console.log(`[updateDefaultAssistantsAvatars] Session not found for slug: ${slug}`);
+          continue;
+        }
+
+        console.log(
+          `[updateDefaultAssistantsAvatars] Found session for ${slug}, ID: ${session.id}`,
+        );
+
+        const agent = session.agentsToSessions?.[0]?.agent;
+        if (!agent) {
+          console.log(`[updateDefaultAssistantsAvatars] No agent found for session ${slug}`);
+          continue;
+        }
+
+        console.log(`[updateDefaultAssistantsAvatars] Current avatar for ${slug}:`, agent.avatar);
+        console.log(`[updateDefaultAssistantsAvatars] Updating to:`, avatar);
+
+        await this.updateConfig(session.id, { avatar });
+        console.log(`[updateDefaultAssistantsAvatars] Successfully updated avatar for ${slug}`);
+      } catch (error) {
+        console.error(
+          `[updateDefaultAssistantsAvatars] Failed to update avatar for ${slug}:`,
+          error,
+        );
+      }
+    }
+
+    console.log('[updateDefaultAssistantsAvatars] Finished avatar updates');
   };
 
   batchCreate = async (newSessions: NewSession[]) => {

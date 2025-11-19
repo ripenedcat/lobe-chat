@@ -162,6 +162,9 @@ export const sessionRouter = router({
       return ctx.sessionModel.queryByKeyword(input.keywords);
     }),
 
+  updateDefaultAssistantsAvatars: sessionProcedure.mutation(async ({ ctx }) => {
+    await ctx.sessionModel.updateDefaultAssistantsAvatars();
+  }),
   updateSession: sessionProcedure
     .input(
       z.object({

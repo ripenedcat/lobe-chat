@@ -79,4 +79,6 @@ export interface ISessionService {
 
   removeSessionGroup(id: string, removeChildren?: boolean): Promise<any>;
   removeSessionGroups(): Promise<any>;
+
+  updateDefaultAssistantsAvatars(): Promise<void>;
 }

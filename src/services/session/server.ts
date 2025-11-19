@@ -122,4 +122,8 @@ export class ServerService implements ISessionService {
   updateSessionGroupOrder: ISessionService['updateSessionGroupOrder'] = (sortMap) => {
     return lambdaClient.sessionGroup.updateSessionGroupOrder.mutate({ sortMap });
   };
+
+  updateDefaultAssistantsAvatars: ISessionService['updateDefaultAssistantsAvatars'] = () => {
+    return lambdaClient.session.updateDefaultAssistantsAvatars.mutate();
+  };
 }

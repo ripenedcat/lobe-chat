@@ -190,4 +190,8 @@ export class ClientService extends BaseClientService implements ISessionService 
   removeSessionGroups: ISessionService['removeSessionGroups'] = async () => {
     return this.sessionGroupModel.deleteAll();
   };
+
+  updateDefaultAssistantsAvatars: ISessionService['updateDefaultAssistantsAvatars'] = async () => {
+    await this.sessionModel.updateDefaultAssistantsAvatars();
+  };
 }

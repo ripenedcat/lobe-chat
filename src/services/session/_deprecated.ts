@@ -187,4 +187,8 @@ export class ClientService implements ISessionService {
   async removeSessionGroups() {
     return SessionGroupModel.clear();
   }
+
+  async updateDefaultAssistantsAvatars(): Promise<void> {
+    // No-op for deprecated service - only needed for new database
+  }
 }

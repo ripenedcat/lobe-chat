@@ -25,6 +25,11 @@ export class AgentService {
     await sessionModel.createDefaultAssistants(defaultAgentConfig);
   }
 
+  async updateDefaultAssistantsAvatars() {
+    const sessionModel = new SessionModel(this.db, this.userId);
+    await sessionModel.updateDefaultAssistantsAvatars();
+  }
+
   async initializeGithubCopilotProvider() {
     try {
       const aiProviderModel = new AiProviderModel(this.db, this.userId);
