@@ -1,6 +1,6 @@
 import { Avatar, Icon, ItemType } from '@lobehub/ui';
 import isEqual from 'fast-deep-equal';
-import { ArrowRight, Store, ToyBrick } from 'lucide-react';
+import { ToyBrick } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Flexbox } from 'react-layout-kit';
 
@@ -15,13 +15,11 @@ import { builtinToolSelectors, pluginSelectors } from '@/store/tool/selectors';
 
 import ToolItem from './ToolItem';
 
-export const useControls = ({
-  setModalOpen,
-  setUpdating,
-}: {
+export const useControls = (props: {
   setModalOpen: (open: boolean) => void;
   setUpdating: (updating: boolean) => void;
 }) => {
+  const { setUpdating } = props;
   const { t } = useTranslation('setting');
   const list = useToolStore(pluginSelectors.installedPluginMetaList, isEqual);
   const { showDalle } = useServerConfigStore(featureFlagsSelectors);
@@ -100,18 +98,6 @@ export const useControls = ({
         </Flexbox>
       ),
       type: 'group',
-    },
-    {
-      type: 'divider',
-    },
-    {
-      extra: <Icon icon={ArrowRight} />,
-      icon: Store,
-      key: 'plugin-store',
-      label: t('tools.plugins.store'),
-      onClick: () => {
-        setModalOpen(true);
-      },
     },
   ];
 

@@ -1,6 +1,7 @@
 import { LobeChatDatabase } from '@lobechat/database';
 
 import { AiProviderModel } from '@/database/models/aiProvider';
+import { PluginModel } from '@/database/models/plugin';
 import { SessionModel } from '@/database/models/session';
 import { getServerDefaultAgentConfig } from '@/server/globalConfig';
 
@@ -73,6 +74,67 @@ export class AgentService {
       }
       // Log other errors but don't throw - we don't want to break session loading
       console.error('[AgentService] Error initializing GitHub Copilot provider:', error);
+    }
+  }
+
+  async initializeMilvusMcpServer() {
+    try {
+      const pluginModel = new PluginModel(this.db, this.userId);
+
+      const identifier = 'milvus-mcp-http';
+
+      // Check if the MCP server already exists
+      const existingPlugin = await pluginModel.findById(identifier);
+
+      if (!existingPlugin) {
+        // Create the default Milvus MCP server
+        await pluginModel.create({
+          customParams: {
+            mcp: {
+              type: 'http',
+              url: 'http://104.43.56.99:8001/mcp',
+            },
+          },
+          identifier,
+          manifest: {
+            api: [],
+            author: 'LobeHub',
+            createdAt: new Date().toISOString(),
+            homepage: 'https://lobehub.com',
+            identifier,
+            meta: {
+              avatar: '📦',
+              description: 'Built-in Milvus MCP Server',
+              tags: ['mcp', 'builtin'],
+              title: 'milvus-mcp-http',
+            },
+            systemRole: '',
+            type: 'default',
+            version: '1',
+          },
+          type: 'plugin',
+        });
+        console.log('[AgentService] Successfully created Milvus MCP server');
+      } else {
+        // Update existing MCP server to ensure proper configuration
+        await pluginModel.update(identifier, {
+          customParams: {
+            mcp: {
+              type: 'http',
+              url: 'http://104.43.56.99:8001/mcp',
+            },
+          },
+        });
+        console.log('[AgentService] Updated Milvus MCP server configuration');
+      }
+    } catch (error: any) {
+      // Ignore duplicate key errors (23505) - plugin already exists
+      if (error?.cause?.code === '23505') {
+        console.log('[AgentService] Milvus MCP server already exists (duplicate key)');
+        return;
+      }
+      // Log other errors but don't throw - we don't want to break session loading
+      console.error('[AgentService] Error initializing Milvus MCP server:', error);
     }
   }
 }

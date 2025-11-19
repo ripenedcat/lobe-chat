@@ -60,6 +60,9 @@ export class UserService {
     // 5. Initialize GitHub Copilot provider with default API key
     await agentService.initializeGithubCopilotProvider();
 
+    // 6. Initialize Milvus MCP server
+    await agentService.initializeMilvusMcpServer();
+
     /* ↓ cloud slot ↓ */
 
     /* ↑ cloud slot ↑ */
