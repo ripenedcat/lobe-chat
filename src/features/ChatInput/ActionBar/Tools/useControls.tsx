@@ -1,4 +1,4 @@
-import { Avatar, Icon, ItemType } from '@lobehub/ui';
+import { Icon, ItemType } from '@lobehub/ui';
 import isEqual from 'fast-deep-equal';
 import { ToyBrick } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -9,9 +9,8 @@ import { useCheckPluginsIsInstalled } from '@/hooks/useCheckPluginsIsInstalled';
 import { useFetchInstalledPlugins } from '@/hooks/useFetchInstalledPlugins';
 import { useAgentStore } from '@/store/agent';
 import { agentSelectors } from '@/store/agent/selectors';
-import { featureFlagsSelectors, useServerConfigStore } from '@/store/serverConfig';
 import { useToolStore } from '@/store/tool';
-import { builtinToolSelectors, pluginSelectors } from '@/store/tool/selectors';
+import { pluginSelectors } from '@/store/tool/selectors';
 
 import ToolItem from './ToolItem';
 
@@ -22,18 +21,11 @@ export const useControls = (props: {
   const { setUpdating } = props;
   const { t } = useTranslation('setting');
   const list = useToolStore(pluginSelectors.installedPluginMetaList, isEqual);
-  const { showDalle } = useServerConfigStore(featureFlagsSelectors);
   const [checked, togglePlugin] = useAgentStore((s) => [
     agentSelectors.currentAgentPlugins(s),
     s.togglePlugin,
   ]);
-  const builtinList = useToolStore(builtinToolSelectors.metaList(showDalle), isEqual);
-  const enablePluginCount = useAgentStore(
-    (s) =>
-      agentSelectors
-        .currentAgentPlugins(s)
-        .filter((i) => !builtinList.some((b) => b.identifier === i)).length,
-  );
+  const enablePluginCount = useAgentStore((s) => agentSelectors.currentAgentPlugins(s).length);
   const plugins = useAgentStore((s) => agentSelectors.currentAgentPlugins(s));
 
   const [useFetchPluginStore] = useToolStore((s) => [s.useFetchPluginStore]);
@@ -43,28 +35,6 @@ export const useControls = (props: {
   useCheckPluginsIsInstalled(plugins);
 
   const items: ItemType[] = [
-    {
-      children: builtinList.map((item) => ({
-        icon: <Avatar avatar={item.meta.avatar} size={20} style={{ flex: 'none' }} />,
-        key: item.identifier,
-        label: (
-          <ToolItem
-            checked={checked.includes(item.identifier)}
-            id={item.identifier}
-            label={item.meta?.title}
-            onUpdate={async () => {
-              setUpdating(true);
-              await togglePlugin(item.identifier);
-              setUpdating(false);
-            }}
-          />
-        ),
-      })),
-
-      key: 'builtins',
-      label: t('tools.builtins.groupName'),
-      type: 'group',
-    },
     {
       children: list.map((item) => ({
         icon: item?.avatar ? (
