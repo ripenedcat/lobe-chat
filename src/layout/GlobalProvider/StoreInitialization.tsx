@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { createStoreUpdater } from 'zustand-utils';
 
 import { enableNextAuth } from '@/const/auth';
+import { useInitializeMilvusMCP } from '@/hooks/useInitializeMilvusMCP';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useAgentStore } from '@/store/agent';
 import { useAiInfraStore } from '@/store/aiInfra';
@@ -78,6 +79,9 @@ const StoreInitialization = memo(() => {
 
   useStoreUpdater('isMobile', mobile);
   useStoreUpdater('router', router);
+
+  // Initialize built-in Milvus MCP server
+  useInitializeMilvusMCP();
 
   return null;
 });
