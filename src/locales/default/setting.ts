@@ -25,6 +25,8 @@ export default {
   },
   collection: {
     title: '知识库',
+    tooltip:
+      'This is the collection name that will be used by the agent to query corresponding database.',
   },
   danger: {
     clear: {

@@ -23,7 +23,8 @@
     "tooltip": "此设置将让 Checkpoint Agent 知道你当前正在进行 {{week}}。"
   },
   "collection": {
-    "title": "知识库"
+    "title": "知识库",
+    "tooltip": "这是 agent 用于查询对应数据库的 collection 名称。"
   },
   "danger": {
     "clear": {

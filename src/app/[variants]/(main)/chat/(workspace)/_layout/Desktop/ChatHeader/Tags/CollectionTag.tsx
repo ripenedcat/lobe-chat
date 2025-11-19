@@ -12,7 +12,7 @@ const CollectionTag = memo(() => {
   const collection = useAgentStore(agentSelectors.currentAgentCollection);
 
   return (
-    <Tooltip title={t('collection.title')}>
+    <Tooltip title={t('collection.tooltip')}>
       <Flexbox height={22}>
         <Tag>
           <Icon icon={Package} />

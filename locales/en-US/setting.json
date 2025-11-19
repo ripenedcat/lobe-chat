@@ -23,7 +23,8 @@
     "tooltip": "This Setting will let Checkpoint Agent know that you are currently working on {{week}}."
   },
   "collection": {
-    "title": "Collection"
+    "title": "Collection",
+    "tooltip": "This is the collection name that will be used by the agent to query corresponding database."
   },
   "danger": {
     "clear": {
