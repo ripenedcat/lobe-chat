@@ -18,6 +18,10 @@
     },
     "title": "数据统计"
   },
+  "checkpointWeek": {
+    "title": "Checkpoint 周期",
+    "tooltip": "此设置将让 Checkpoint Agent 知道你当前正在进行 {{week}}。"
+  },
   "collection": {
     "title": "知识库"
   },

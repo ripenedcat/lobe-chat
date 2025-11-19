@@ -18,6 +18,10 @@
     },
     "title": "Analytics"
   },
+  "checkpointWeek": {
+    "title": "Checkpoint Week",
+    "tooltip": "This Setting will let Checkpoint Agent know that you are currently working on {{week}}."
+  },
   "collection": {
     "title": "Collection"
   },

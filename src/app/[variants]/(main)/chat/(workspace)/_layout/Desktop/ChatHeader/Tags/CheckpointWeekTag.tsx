@@ -12,7 +12,7 @@ const CheckpointWeekTag = memo(() => {
   const checkpointWeek = useAgentStore(agentSelectors.currentAgentCheckpointWeek);
 
   return (
-    <Tooltip title={t('checkpointWeek.title')}>
+    <Tooltip title={t('checkpointWeek.tooltip', { week: checkpointWeek })}>
       <Flexbox height={22}>
         <Tag>
           <Icon icon={Calendar} />

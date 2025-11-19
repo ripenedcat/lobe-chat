@@ -20,6 +20,8 @@ export default {
   },
   checkpointWeek: {
     title: 'Checkpoint 周期',
+    tooltip:
+      'This Setting will let Checkpoint Agent know that you are currently working on {{week}}.',
   },
   collection: {
     title: '知识库',
