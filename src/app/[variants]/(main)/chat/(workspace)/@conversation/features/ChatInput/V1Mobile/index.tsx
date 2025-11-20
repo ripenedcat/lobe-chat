@@ -19,7 +19,6 @@ import { useSendMessage } from './useSend';
 
 const defaultLeftActions: ActionKeys[] = [
   'model',
-  'search',
   'fileUpload',
   'knowledgeBase',
   'tools',
