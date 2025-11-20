@@ -1,21 +1,30 @@
-'use client';
-
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { INBOX_SESSION_ID } from '@/const/session';
 import { SESSION_CHAT_URL } from '@/const/url';
 import { useSessionStore } from '@/store/session';
 
-const Page = () => {
+/**
+ * Auto redirect to the last used agent or readiness-plan-agent
+ * when user visits the chat page without a specific session
+ */
+export const useAutoRedirectToAgent = () => {
   const router = useRouter();
+  const redirected = useRef(false);
+
   const activeId = useSessionStore((s) => s.activeId);
   const sessions = useSessionStore((s) => s.sessions);
-  const isSessionsFirstFetchFinished = useSessionStore((s) => s.isSessionsFirstFetchFinished);
 
   useEffect(() => {
-    // Wait for sessions to be loaded before redirecting
-    if (!isSessionsFirstFetchFinished) return;
+    // Only redirect once
+    if (redirected.current) return;
+
+    // If already on a specific session (not inbox), don't redirect
+    if (activeId && activeId !== INBOX_SESSION_ID) {
+      redirected.current = true;
+      return;
+    }
 
     // If on inbox or no active session, redirect to last used agent or readiness-plan-agent
     if (activeId === INBOX_SESSION_ID || !activeId) {
@@ -40,18 +49,13 @@ const Page = () => {
 
       if (targetSession) {
         console.log(
-          '[Auto Redirect] Redirecting to:',
+          '[useAutoRedirectToAgent] Redirecting to:',
           targetSession.id,
           'slug' in targetSession ? targetSession.slug : '',
         );
+        redirected.current = true;
         router.replace(SESSION_CHAT_URL(targetSession.id));
       }
     }
-  }, [activeId, sessions, router, isSessionsFirstFetchFinished]);
-
-  return null;
+  }, [activeId, sessions, router]);
 };
-
-Page.displayName = 'Chat';
-
-export default Page;

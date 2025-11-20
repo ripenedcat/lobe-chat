@@ -15,6 +15,10 @@ const handler = (req: NextRequest) =>
     endpoint: '/trpc/lambda',
 
     onError: ({ error, path, type }) => {
+      // Ignore JSON parsing errors from aborted/cancelled requests
+      if (error.message?.includes('Unexpected end of JSON input')) {
+        return;
+      }
       pino.info(`Error in tRPC handler (lambda) on path: ${path}, type: ${type}`);
       console.error(error);
     },
