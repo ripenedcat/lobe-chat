@@ -7,6 +7,7 @@ import { createStoreUpdater } from 'zustand-utils';
 
 import { enableNextAuth } from '@/const/auth';
 import { useInitializeMilvusMCP } from '@/hooks/useInitializeMilvusMCP';
+import { useInitializeSendReportMCP } from '@/hooks/useInitializeSendReportMCP';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useAgentStore } from '@/store/agent';
 import { useAiInfraStore } from '@/store/aiInfra';
@@ -82,6 +83,9 @@ const StoreInitialization = memo(() => {
 
   // Initialize built-in Milvus MCP server
   useInitializeMilvusMCP();
+
+  // Initialize built-in Send Report MCP server
+  useInitializeSendReportMCP();
 
   return null;
 });

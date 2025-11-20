@@ -2,6 +2,7 @@ import { LobeChatPluginManifest } from '@lobehub/chat-plugin-sdk';
 import { uniq } from 'lodash-es';
 
 import { MILVUS_MCP_IDENTIFIER, MilvusMCPTool } from '@/tools/milvus-mcp';
+import { SEND_REPORT_MCP_IDENTIFIER, SendReportMCPTool } from '@/tools/send-report-mcp';
 import { InstallPluginMeta, LobeToolCustomPlugin } from '@/types/tool/plugin';
 
 import type { ToolStoreState } from '../../initialState';
@@ -25,6 +26,16 @@ const getPluginMetaById = (id: string) => (s: ToolStoreState) => {
       description: MilvusMCPTool.manifest.meta.description,
       tags: MilvusMCPTool.manifest.meta.tags,
       title: MilvusMCPTool.manifest.meta.title,
+    };
+  }
+
+  // Special handling for Send Report MCP - always use the friendly name from definition
+  if (id === SEND_REPORT_MCP_IDENTIFIER && SendReportMCPTool.manifest?.meta) {
+    return {
+      avatar: SendReportMCPTool.manifest.meta.avatar,
+      description: SendReportMCPTool.manifest.meta.description,
+      tags: SendReportMCPTool.manifest.meta.tags,
+      title: SendReportMCPTool.manifest.meta.title,
     };
   }
 
