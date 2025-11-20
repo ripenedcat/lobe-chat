@@ -4,8 +4,10 @@ const githubCopilotChatModels: AIChatModelCard[] = [
   {
     abilities: {
       functionCall: true,
+      reasoning: true,
+      vision: true,
     },
-    contextWindowTokens: 200_000,
+    contextWindowTokens: 400_000,
     description:
       'GPT-5 is an advanced language model with exceptional reasoning and understanding capabilities.',
     displayName: 'gpt-5',
