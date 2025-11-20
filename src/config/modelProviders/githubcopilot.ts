@@ -29,15 +29,10 @@ const GithubCopilot: ModelProviderCard = {
   enabled: true,
   id: 'githubcopilot',
   name: 'GitHub Copilot',
-  proxyUrl: {
-    placeholder: 'https://api.example.com',
-  },
   settings: {
-    proxyUrl: {
-      placeholder: 'https://api.example.com',
-    },
     sdkType: 'anthropic',
-    showApiKey: true,
+    showApiKey: false, // Hide API Key since it's configured via backend environment variables
+    showModelFetcher: false, // Disable adding custom models
   },
   url: 'https://github.com/features/copilot',
 };

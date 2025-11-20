@@ -61,7 +61,8 @@ const useProviderCard = (): ProviderItem => {
 const Page = () => {
   const card = useProviderCard();
 
-  return <ProviderDetail {...card} />;
+  // Hide provider config for GitHub Copilot since it's configured via backend environment variables
+  return <ProviderDetail {...card} showConfig={false} />;
 };
 
 export default Page;
