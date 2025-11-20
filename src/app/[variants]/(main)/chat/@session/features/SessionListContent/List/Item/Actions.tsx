@@ -213,6 +213,11 @@ const Actions = memo<ActionProps>(({ group, id, openCreateGroupModal, parentType
     [id, pin, openSessionInNewWindow, isDefaultAssistant],
   );
 
+  // Don't render actions dropdown for default assistants
+  if (isDefaultAssistant) {
+    return null;
+  }
+
   return (
     <Dropdown
       arrow={false}
