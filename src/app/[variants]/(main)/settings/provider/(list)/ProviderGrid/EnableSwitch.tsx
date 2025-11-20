@@ -1,3 +1,4 @@
+import { Switch } from 'antd';
 import { FC } from 'react';
 
 import InstantSwitch from '@/components/InstantSwitch';
@@ -9,8 +10,13 @@ interface SwitchProps {
   id: string;
 }
 
-const Switch = ({ id, Component, enabled }: SwitchProps) => {
+const EnableSwitch = ({ id, Component, enabled }: SwitchProps) => {
   const [toggleProviderEnabled] = useAiInfraStore((s) => [s.toggleProviderEnabled]);
+
+  // GitHub Copilot provider cannot be disabled
+  if (id === 'githubcopilot') {
+    return <Switch checked={true} disabled size={'small'} />;
+  }
 
   // slot for cloud
   if (Component) return <Component enabled={enabled} id={id} />;
@@ -26,4 +32,4 @@ const Switch = ({ id, Component, enabled }: SwitchProps) => {
   );
 };
 
-export default Switch;
+export default EnableSwitch;

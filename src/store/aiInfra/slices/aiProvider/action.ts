@@ -174,6 +174,9 @@ export const createAiProviderSlice: StateCreator<
   },
 
   toggleProviderEnabled: async (id: string, enabled: boolean) => {
+    // GitHub Copilot provider cannot be disabled
+    if (id === 'githubcopilot') return;
+
     get().internal_toggleAiProviderLoading(id, true);
     await aiProviderService.toggleProviderEnabled(id, enabled);
     await get().refreshAiProviderList();
