@@ -108,8 +108,16 @@ class ChatService {
     const agentConfig = agentSelectors.currentAgentConfig(agentStoreState);
     const chatConfig = agentChatConfigSelectors.currentChatConfig(agentStoreState);
 
+    // Get user email
+    const userStoreState = getUserStoreState();
+    const userEmail = userProfileSelectors.email(userStoreState);
+
     // Add collection and checkpoint week information to system role
     let systemRole = agentConfig.systemRole;
+    if (userEmail) {
+      const emailContext = `\n\n[System Context: Current user email is "${userEmail}"]`;
+      systemRole = systemRole ? systemRole + emailContext : emailContext;
+    }
     if (agentConfig.collection) {
       const collectionContext = `\n\n[System Context: Current knowledge base collection is "${agentConfig.collection}"]`;
       systemRole = systemRole ? systemRole + collectionContext : collectionContext;
