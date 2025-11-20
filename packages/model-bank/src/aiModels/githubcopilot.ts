@@ -14,19 +14,6 @@ const githubCopilotChatModels: AIChatModelCard[] = [
     maxOutput: 32_000,
     type: 'chat',
   },
-  {
-    abilities: {
-      functionCall: true,
-    },
-    contextWindowTokens: 200_000,
-    description:
-      'Claude Sonnet 4.5 provides excellent performance with advanced reasoning capabilities.',
-    displayName: 'claude-sonnet-4.5',
-    enabled: true,
-    id: 'claude-sonnet-4.5',
-    maxOutput: 64_000,
-    type: 'chat',
-  },
 ];
 
 export const allModels = [...githubCopilotChatModels];
