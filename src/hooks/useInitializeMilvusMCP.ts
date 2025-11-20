@@ -43,6 +43,7 @@ export const useInitializeMilvusMCP = () => {
           metadata: {
             avatar: MilvusMCPTool.manifest?.meta.avatar,
             description: MilvusMCPTool.manifest?.meta.description,
+            name: MilvusMCPTool.manifest?.meta.title,
           },
           url: 'http://104.43.56.99:8001/mcp',
         });

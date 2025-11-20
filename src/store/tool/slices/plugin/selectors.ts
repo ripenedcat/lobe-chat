@@ -1,6 +1,7 @@
 import { LobeChatPluginManifest } from '@lobehub/chat-plugin-sdk';
 import { uniq } from 'lodash-es';
 
+import { MILVUS_MCP_IDENTIFIER, MilvusMCPTool } from '@/tools/milvus-mcp';
 import { InstallPluginMeta, LobeToolCustomPlugin } from '@/types/tool/plugin';
 
 import type { ToolStoreState } from '../../initialState';
@@ -17,6 +18,16 @@ const getInstalledPluginById = (id?: string) => (s: ToolStoreState) => {
 };
 
 const getPluginMetaById = (id: string) => (s: ToolStoreState) => {
+  // Special handling for Milvus MCP - always use the friendly name from definition
+  if (id === MILVUS_MCP_IDENTIFIER && MilvusMCPTool.manifest?.meta) {
+    return {
+      avatar: MilvusMCPTool.manifest.meta.avatar,
+      description: MilvusMCPTool.manifest.meta.description,
+      tags: MilvusMCPTool.manifest.meta.tags,
+      title: MilvusMCPTool.manifest.meta.title,
+    };
+  }
+
   // first try to find meta from store
   const item = s.oldPluginItems.find((i) => i.identifier === id);
   if (item)

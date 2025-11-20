@@ -265,6 +265,7 @@ export const createMCPPluginStoreSlice: StateCreator<
             metadata: {
               avatar: plugin.icon,
               description: plugin.description,
+              name: data.name,
             },
             url: connection.url!,
           },
