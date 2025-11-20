@@ -8,7 +8,6 @@ import { createStoreUpdater } from 'zustand-utils';
 import { enableNextAuth } from '@/const/auth';
 import { useInitializeMilvusMCP } from '@/hooks/useInitializeMilvusMCP';
 import { useIsMobile } from '@/hooks/useIsMobile';
-import { useUpdateDefaultAssistantsAvatars } from '@/hooks/useUpdateDefaultAssistantsAvatars';
 import { useAgentStore } from '@/store/agent';
 import { useAiInfraStore } from '@/store/aiInfra';
 import { useGlobalStore } from '@/store/global';
@@ -83,9 +82,6 @@ const StoreInitialization = memo(() => {
 
   // Initialize built-in Milvus MCP server
   useInitializeMilvusMCP();
-
-  // Update default assistants avatars for existing users
-  useUpdateDefaultAssistantsAvatars(isLoginOnInit);
 
   return null;
 });
