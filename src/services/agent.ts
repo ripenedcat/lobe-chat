@@ -44,6 +44,10 @@ class AgentService {
   getFilesAndKnowledgeBases = async (agentId: string) => {
     return lambdaClient.agent.getKnowledgeBasesAndFiles.query({ agentId });
   };
+
+  updateDefaultAssistantsConfig = async () => {
+    return lambdaClient.agent.updateDefaultAssistantsConfig.mutate();
+  };
 }
 
 export const agentService = new AgentService();

@@ -280,12 +280,21 @@ export class SessionModel {
     });
   };
 
-  createDefaultAssistants = async (defaultAgentConfig: PartialDeep<LobeAgentConfig>) => {
+  createDefaultAssistants = async (
+    defaultAgentConfig: PartialDeep<LobeAgentConfig>,
+    envAgentConfigs?: {
+      checkpointAgent?: { params?: Partial<LobeAgentConfig['params']>; systemRole?: string };
+      qaAgent?: { params?: Partial<LobeAgentConfig['params']>; systemRole?: string };
+      readinessPlanAgent?: { params?: Partial<LobeAgentConfig['params']>; systemRole?: string };
+    },
+  ) => {
     const DEFAULT_ASSISTANTS = [
       {
         config: {
           avatar: '😀',
+          params: envAgentConfigs?.readinessPlanAgent?.params,
           systemRole:
+            envAgentConfigs?.readinessPlanAgent?.systemRole ||
             'You are a Readiness Plan Agent. Your role is to help users create comprehensive readiness plans.',
         },
         slug: 'readiness-plan-agent',
@@ -294,7 +303,9 @@ export class SessionModel {
       {
         config: {
           avatar: '😆',
+          params: envAgentConfigs?.checkpointAgent?.params,
           systemRole:
+            envAgentConfigs?.checkpointAgent?.systemRole ||
             'You are a Checkpoint Agent. Your role is to help users track progress and verify completion of tasks.',
         },
         slug: 'checkpoint-agent',
@@ -303,7 +314,9 @@ export class SessionModel {
       {
         config: {
           avatar: '😉',
+          params: envAgentConfigs?.qaAgent?.params,
           systemRole:
+            envAgentConfigs?.qaAgent?.systemRole ||
             'You are a QA Agent. Your role is to help users with quality assurance and testing.',
         },
         slug: 'qa-agent',
@@ -398,6 +411,124 @@ export class SessionModel {
     }
 
     console.log('[updateDefaultAssistantsAvatars] Finished avatar updates');
+  };
+
+  updateDefaultAssistantsConfig = async (envAgentConfigs?: {
+    checkpointAgent?: { params?: Partial<LobeAgentConfig['params']>; systemRole?: string };
+    qaAgent?: { params?: Partial<LobeAgentConfig['params']>; systemRole?: string };
+    readinessPlanAgent?: { params?: Partial<LobeAgentConfig['params']>; systemRole?: string };
+  }) => {
+    if (!envAgentConfigs) {
+      console.log('[updateDefaultAssistantsConfig] No env configs provided, skipping update');
+      return;
+    }
+
+    const CONFIG_MAPPINGS: Array<{
+      config?: { params?: Partial<LobeAgentConfig['params']>; systemRole?: string };
+      slug: string;
+    }> = [
+      {
+        config: envAgentConfigs.readinessPlanAgent,
+        slug: 'readiness-plan-agent',
+      },
+      {
+        config: envAgentConfigs.checkpointAgent,
+        slug: 'checkpoint-agent',
+      },
+      {
+        config: envAgentConfigs.qaAgent,
+        slug: 'qa-agent',
+      },
+    ];
+
+    console.log('[updateDefaultAssistantsConfig] Starting config updates for user:', this.userId);
+
+    for (const { slug, config } of CONFIG_MAPPINGS) {
+      if (!config) {
+        console.log(`[updateDefaultAssistantsConfig] No config for ${slug}, skipping`);
+        continue;
+      }
+
+      try {
+        const session = await this.db.query.sessions.findFirst({
+          where: and(eq(sessions.userId, this.userId), eq(sessions.slug, slug)),
+          with: {
+            agentsToSessions: {
+              with: {
+                agent: true,
+              },
+            },
+          },
+        });
+
+        if (!session) {
+          console.log(`[updateDefaultAssistantsConfig] Session not found for slug: ${slug}`);
+          continue;
+        }
+
+        const agent = session.agentsToSessions?.[0]?.agent;
+        if (!agent) {
+          console.log(`[updateDefaultAssistantsConfig] No agent found for session ${slug}`);
+          continue;
+        }
+
+        const updatePayload: PartialDeep<LobeAgentConfig> = {};
+
+        if (config.systemRole) {
+          updatePayload.systemRole = config.systemRole;
+          console.log(`[updateDefaultAssistantsConfig] Updating systemRole for ${slug}`);
+        }
+
+        if (config.params) {
+          // Merge with existing params to ensure all params are included
+          const existingParams = (agent.params as LobeAgentConfig['params']) || {};
+          updatePayload.params = {
+            frequency_penalty: config.params.frequency_penalty ?? existingParams.frequency_penalty,
+            presence_penalty: config.params.presence_penalty ?? existingParams.presence_penalty,
+            temperature: config.params.temperature ?? existingParams.temperature,
+            top_p: config.params.top_p ?? existingParams.top_p,
+          };
+          console.log(
+            `[updateDefaultAssistantsConfig] Updating params for ${slug}:`,
+            updatePayload.params,
+          );
+        }
+
+        if (Object.keys(updatePayload).length > 0) {
+          console.log(
+            `[updateDefaultAssistantsConfig] About to update ${slug} with payload:`,
+            JSON.stringify(updatePayload, null, 2),
+          );
+          console.log(`[updateDefaultAssistantsConfig] Current agent params:`, agent.params);
+          console.log(
+            `[updateDefaultAssistantsConfig] Current agent systemRole:`,
+            agent.systemRole,
+          );
+
+          await this.updateConfig(session.id, updatePayload);
+
+          // Verify the update
+          const updatedSession = await this.findByIdOrSlug(session.id);
+          console.log(
+            `[updateDefaultAssistantsConfig] After update - params:`,
+            updatedSession?.agent?.params,
+          );
+          console.log(
+            `[updateDefaultAssistantsConfig] After update - systemRole:`,
+            updatedSession?.agent?.systemRole,
+          );
+
+          console.log(`[updateDefaultAssistantsConfig] Successfully updated config for ${slug}`);
+        }
+      } catch (error) {
+        console.error(
+          `[updateDefaultAssistantsConfig] Failed to update config for ${slug}:`,
+          error,
+        );
+      }
+    }
+
+    console.log('[updateDefaultAssistantsConfig] Finished config updates');
   };
 
   batchCreate = async (newSessions: NewSession[]) => {

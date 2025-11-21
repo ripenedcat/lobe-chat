@@ -138,26 +138,26 @@ export const createChatSlice: StateCreator<
 
     const originConfig = agentSelectors.currentAgentConfig(get());
 
-    const config = produce(originConfig, (draft) => {
-      draft.plugins = produce(draft.plugins || [], (plugins) => {
-        const index = plugins.indexOf(id);
-        const shouldOpen = open !== undefined ? open : index === -1;
+    // Only update the plugins field, not the entire config
+    const plugins = produce(originConfig.plugins || [], (draft) => {
+      const index = draft.indexOf(id);
+      const shouldOpen = open !== undefined ? open : index === -1;
 
-        if (shouldOpen) {
-          // 如果 open 为 true 或者 id 不存在于 plugins 中，则添加它
-          if (index === -1) {
-            plugins.push(id);
-          }
-        } else {
-          // 如果 open 为 false 或者 id 存在于 plugins 中，则移除它
-          if (index !== -1) {
-            plugins.splice(index, 1);
-          }
+      if (shouldOpen) {
+        // 如果 open 为 true 或者 id 不存在于 plugins 中，则添加它
+        if (index === -1) {
+          draft.push(id);
         }
-      });
+      } else {
+        // 如果 open 为 false 或者 id 存在于 plugins 中，则移除它
+        if (index !== -1) {
+          draft.splice(index, 1);
+        }
+      }
     });
 
-    await get().updateAgentConfig(config);
+    // Only pass the plugins field to avoid overwriting other config
+    await get().updateAgentConfig({ plugins });
   },
   updateAgentChatConfig: async (config) => {
     const { activeId } = get();

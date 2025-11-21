@@ -3,6 +3,7 @@ import { LobeChatDatabase } from '@lobechat/database';
 import { AiProviderModel } from '@/database/models/aiProvider';
 import { SessionModel } from '@/database/models/session';
 import { getServerDefaultAgentConfig } from '@/server/globalConfig';
+import { parseDefaultAgents } from '@/server/globalConfig/parseDefaultAgents';
 
 export class AgentService {
   private readonly userId: string;
@@ -22,12 +23,19 @@ export class AgentService {
   async createDefaultAssistants() {
     const sessionModel = new SessionModel(this.db, this.userId);
     const defaultAgentConfig = getServerDefaultAgentConfig();
-    await sessionModel.createDefaultAssistants(defaultAgentConfig);
+    const envAgentConfigs = parseDefaultAgents();
+    await sessionModel.createDefaultAssistants(defaultAgentConfig, envAgentConfigs);
   }
 
   async updateDefaultAssistantsAvatars() {
     const sessionModel = new SessionModel(this.db, this.userId);
     await sessionModel.updateDefaultAssistantsAvatars();
+  }
+
+  async updateDefaultAssistantsConfig() {
+    const sessionModel = new SessionModel(this.db, this.userId);
+    const envAgentConfigs = parseDefaultAgents();
+    await sessionModel.updateDefaultAssistantsConfig(envAgentConfigs);
   }
 
   async initializeGithubCopilotProvider() {

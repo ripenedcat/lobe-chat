@@ -169,4 +169,8 @@ export const agentRouter = router({
         input.enabled,
       );
     }),
+
+  updateDefaultAssistantsConfig: agentProcedure.mutation(async ({ ctx }) => {
+    return ctx.agentService.updateDefaultAssistantsConfig();
+  }),
 });

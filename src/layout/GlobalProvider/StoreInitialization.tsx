@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { createStoreUpdater } from 'zustand-utils';
 
 import { enableNextAuth } from '@/const/auth';
+import { useEnforceManagedConfig } from '@/hooks/useEnforceManagedConfig';
 import { useInitializeMilvusMCP } from '@/hooks/useInitializeMilvusMCP';
 import { useInitializeSendReportMCP } from '@/hooks/useInitializeSendReportMCP';
 import { useIsMobile } from '@/hooks/useIsMobile';
@@ -86,6 +87,9 @@ const StoreInitialization = memo(() => {
 
   // Initialize built-in Send Report MCP server
   useInitializeSendReportMCP();
+
+  // Enforce managed configuration for default agents from environment variables
+  useEnforceManagedConfig(isLoginOnInit);
 
   return null;
 });
