@@ -63,6 +63,11 @@ const isSessionListInit = (s: SessionStore) => s.isSessionsFirstFetchFinished;
 // use to judge whether a session is fully activated
 const isSomeSessionActive = (s: SessionStore) => !!s.activeId && isSessionListInit(s);
 
+const isCurrentCheckpointAgent = (s: SessionStore): boolean => {
+  const session = currentSession(s);
+  return session && 'slug' in session && session.slug === 'checkpoint-agent';
+};
+
 export const sessionSelectors = {
   currentGroupAgents,
   currentSession,
@@ -72,6 +77,7 @@ export const sessionSelectors = {
   getSessionById,
   getSessionMetaById,
   hasCustomAgents,
+  isCurrentCheckpointAgent,
   isCurrentSessionGroupSession,
   isInboxSession,
   isSessionListInit,

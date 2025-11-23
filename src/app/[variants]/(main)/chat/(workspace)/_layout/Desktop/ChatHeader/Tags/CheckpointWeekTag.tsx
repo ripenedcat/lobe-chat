@@ -6,10 +6,15 @@ import { Flexbox } from 'react-layout-kit';
 
 import { useAgentStore } from '@/store/agent';
 import { agentSelectors } from '@/store/agent/selectors';
+import { useSessionStore } from '@/store/session';
+import { sessionSelectors } from '@/store/session/selectors';
 
 const CheckpointWeekTag = memo(() => {
   const { t } = useTranslation('setting');
   const checkpointWeek = useAgentStore(agentSelectors.currentAgentCheckpointWeek);
+  const isCheckpointAgent = useSessionStore(sessionSelectors.isCurrentCheckpointAgent);
+
+  if (!isCheckpointAgent) return null;
 
   return (
     <Tooltip title={t('checkpointWeek.tooltip', { week: checkpointWeek })}>

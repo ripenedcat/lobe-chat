@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 
 import { useAgentStore } from '@/store/agent';
 import { agentSelectors } from '@/store/agent/selectors';
+import { useSessionStore } from '@/store/session';
+import { sessionSelectors } from '@/store/session/selectors';
 
 import Action from '../components/Action';
 import { useControls } from './useControls';
@@ -14,6 +16,9 @@ const CheckpointWeek = memo(() => {
   const items = useControls({ setUpdating });
 
   const selectedCheckpointWeek = useAgentStore(agentSelectors.currentAgentCheckpointWeek);
+  const isCheckpointAgent = useSessionStore(sessionSelectors.isCurrentCheckpointAgent);
+
+  if (!isCheckpointAgent) return null;
 
   return (
     <Suspense fallback={<Action disabled icon={Calendar} title={t('checkpointWeek.title')} />}>
