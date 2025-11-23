@@ -17,7 +17,7 @@ import {
 } from '@/features/ModelParamsControl';
 import { useAgentStore } from '@/store/agent';
 import { agentSelectors } from '@/store/agent/selectors';
-import { useServerConfigStore } from '@/store/serverConfig';
+import { serverConfigSelectors, useServerConfigStore } from '@/store/serverConfig';
 
 interface ControlsProps {
   setUpdating: (updating: boolean) => void;
@@ -66,24 +66,26 @@ interface ParamControlWrapperProps {
   disabled: boolean;
   onChange?: (value: number) => void;
   onToggle: (checked: boolean) => void;
+  readonly?: boolean;
   styles: any;
   value?: number;
 }
 
 const ParamControlWrapper = memo<ParamControlWrapperProps>(
-  ({ Component, value, onChange, disabled, checked, onToggle, styles }) => {
+  ({ Component, value, onChange, disabled, checked, onToggle, styles, readonly }) => {
     return (
       <div className={styles.sliderWrapper}>
         <Checkbox
           checked={checked}
           className={styles.checkbox}
+          disabled={readonly}
           onChange={(e) => {
             e.stopPropagation();
             onToggle(e.target.checked);
           }}
         />
         <div style={{ flex: 1 }}>
-          <Component disabled={disabled} onChange={onChange} value={value} />
+          <Component disabled={disabled || readonly} onChange={onChange} value={value} />
         </div>
       </div>
     );
@@ -144,6 +146,9 @@ const Controls = memo<ControlsProps>(({ setUpdating }) => {
   const mobile = useServerConfigStore((s) => s.isMobile);
   const updateAgentConfig = useAgentStore((s) => s.updateAgentConfig);
   const { styles } = useStyles();
+
+  const enableEditModelParams =
+    useServerConfigStore(serverConfigSelectors.enableEditModelParams) ?? true;
 
   const config = useAgentStore(agentSelectors.currentAgentConfig, isEqual);
   const [form] = Form.useForm();
@@ -271,6 +276,7 @@ const Controls = memo<ControlsProps>(({ setUpdating }) => {
           checked={enabled}
           disabled={!enabled}
           onToggle={(checked) => handleToggle(key, checked)}
+          readonly={!enableEditModelParams}
           styles={styles}
         />
       ),

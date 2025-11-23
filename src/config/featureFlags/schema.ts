@@ -42,6 +42,9 @@ export const FeatureFlagsSchema = z.object({
 
   group_chat: FeatureFlagValue.optional(),
 
+  // agent model parameters editing
+  edit_model_params: FeatureFlagValue.optional(),
+
   // the flags below can only be used with commercial license
   // if you want to use it in the commercial usage
   // please contact us for more information: hello@lobehub.com
@@ -103,6 +106,8 @@ export const DEFAULT_FEATURE_FLAGS: IFeatureFlags = {
 
   group_chat: false,
 
+  edit_model_params: true,
+
   // the flags below can only be used with commercial license
   // if you want to use it in the commercial usage
   // please contact us for more information: hello@lobehub.com
@@ -142,6 +147,8 @@ export const mapFeatureFlagsEnvToState = (config: IFeatureFlags, userId?: string
 
     showMarket: evaluateFeatureFlag(config.market, userId),
     enableSTT: evaluateFeatureFlag(config.speech_to_text, userId),
+
+    enableEditModelParams: evaluateFeatureFlag(config.edit_model_params, userId),
 
     hideGitHub: evaluateFeatureFlag(config.commercial_hide_github, userId),
     hideDocs: evaluateFeatureFlag(config.commercial_hide_docs, userId),

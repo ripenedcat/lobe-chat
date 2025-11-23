@@ -18,6 +18,7 @@ import InfoTooltip from '@/components/InfoTooltip';
 import { FORM_STYLE } from '@/const/layoutTokens';
 import ModelSelect from '@/features/ModelSelect';
 import { useProviderName } from '@/hooks/useProviderName';
+import { serverConfigSelectors, useServerConfigStore } from '@/store/serverConfig';
 
 import { selectors, useStore } from '../store';
 
@@ -52,18 +53,20 @@ interface SliderWithCheckboxProps {
   min: number;
   onChange?: (value: number) => void;
   onToggle: (checked: boolean) => void;
+  readonly?: boolean;
   step: number;
   styles: any;
   value?: number;
 }
 
 const SliderWithCheckbox = memo<SliderWithCheckboxProps>(
-  ({ value, onChange, disabled, checked, onToggle, styles, min, max, step }) => {
+  ({ value, onChange, disabled, checked, onToggle, styles, min, max, step, readonly }) => {
     return (
       <div className={styles.sliderWrapper}>
         <Checkbox
           checked={checked}
           className={styles.checkbox}
+          disabled={readonly}
           onChange={(e) => {
             e.stopPropagation();
             onToggle(e.target.checked);
@@ -71,7 +74,7 @@ const SliderWithCheckbox = memo<SliderWithCheckboxProps>(
         />
         <div style={{ flex: 1 }}>
           <SliderWithInput
-            disabled={disabled}
+            disabled={disabled || readonly}
             max={max}
             min={min}
             onChange={onChange}
@@ -138,6 +141,9 @@ const AgentModal = memo(() => {
   const [form] = Form.useForm();
   const config = useStore(selectors.currentAgentConfig, isEqual);
   const { styles } = useStyles();
+
+  const enableEditModelParams =
+    useServerConfigStore(serverConfigSelectors.enableEditModelParams) ?? true;
 
   const enableMaxTokens = AntdForm.useWatch(['chatConfig', 'enableMaxTokens'], form);
   const enableReasoningEffort = AntdForm.useWatch(['chatConfig', 'enableReasoningEffort'], form);
@@ -239,6 +245,7 @@ const AgentModal = memo(() => {
           max={meta.slider.max}
           min={meta.slider.min}
           onToggle={(checked) => handleToggle(key, checked)}
+          readonly={!enableEditModelParams}
           step={meta.slider.step}
           styles={styles}
         />
