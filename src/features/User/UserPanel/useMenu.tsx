@@ -8,8 +8,6 @@ import {
   Cloudy,
   Download,
   Feather,
-  FileClockIcon,
-  HardDriveDownload,
   LifeBuoy,
   LogOut,
   Mail,
@@ -25,7 +23,6 @@ import { enableAuth } from '@/const/auth';
 import { BRANDING_EMAIL, LOBE_CHAT_CLOUD, SOCIAL_URL } from '@/const/branding';
 import { DEFAULT_DESKTOP_HOTKEY_CONFIG } from '@/const/desktop';
 import {
-  CHANGELOG,
   DOCUMENTS_REFER_URL,
   GITHUB_ISSUES,
   OFFICIAL_URL,
@@ -33,7 +30,6 @@ import {
   mailTo,
 } from '@/const/url';
 import { isDesktop } from '@/const/version';
-import DataImporter from '@/features/DataImporter';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
 import { featureFlagsSelectors, useServerConfigStore } from '@/store/serverConfig';
 import { useUserStore } from '@/store/user';
@@ -120,14 +116,15 @@ export const useMenu = () => {
   const data = !isLogin
     ? []
     : ([
-        {
-          icon: <Icon icon={HardDriveDownload} />,
-          key: 'import',
-          label: <DataImporter>{t('importData')}</DataImporter>,
-        },
-        {
-          type: 'divider',
-        },
+        // Hidden: Import Data button
+        // {
+        //   icon: <Icon icon={HardDriveDownload} />,
+        //   key: 'import',
+        //   label: <DataImporter>{t('importData')}</DataImporter>,
+        // },
+        // {
+        //   type: 'divider',
+        // },
       ].filter(Boolean) as ItemType[]);
 
   const helps: MenuProps['items'] = [
@@ -140,11 +137,12 @@ export const useMenu = () => {
         </Link>
       ),
     },
-    {
-      icon: <Icon icon={FileClockIcon} />,
-      key: 'changelog',
-      label: <Link href={isDesktop ? CHANGELOG : '/changelog/modal'}>{t('changelog')}</Link>,
-    },
+    // Hidden: Changelog button
+    // {
+    //   icon: <Icon icon={FileClockIcon} />,
+    //   key: 'changelog',
+    //   label: <Link href={isDesktop ? CHANGELOG : '/changelog/modal'}>{t('changelog')}</Link>,
+    // },
     {
       children: [
         {
