@@ -65,7 +65,7 @@ const isSomeSessionActive = (s: SessionStore) => !!s.activeId && isSessionListIn
 
 const isCurrentCheckpointAgent = (s: SessionStore): boolean => {
   const session = currentSession(s);
-  return session && 'slug' in session && session.slug === 'checkpoint-agent';
+  return !!(session && 'slug' in session && session.slug === 'checkpoint-agent');
 };
 
 export const sessionSelectors = {
