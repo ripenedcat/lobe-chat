@@ -4,6 +4,8 @@ import { mcpService } from '@/services/mcp';
 import { pluginService } from '@/services/plugin';
 import { useAgentStore } from '@/store/agent';
 import { agentSelectors } from '@/store/agent/selectors';
+import { useSessionStore } from '@/store/session';
+import { sessionSelectors } from '@/store/session/selectors';
 import { useToolStore } from '@/store/tool';
 import { pluginSelectors } from '@/store/tool/selectors';
 import { SEND_REPORT_MCP_IDENTIFIER, SendReportMCPTool } from '@/tools/send-report-mcp';
@@ -15,9 +17,19 @@ export const useInitializeSendReportMCP = () => {
   );
   const currentPlugins = useAgentStore((s) => agentSelectors.currentAgentPlugins(s));
 
+  // Get current session meta to check if it's QA Agent
+  const currentSession = useSessionStore((s) => sessionSelectors.currentSession(s));
+  const isQAAgent = currentSession?.meta?.title === 'QA Agent';
+
   // Install the plugin once
   useEffect(() => {
     const installSendReportMCP = async () => {
+      // Skip installation for QA Agent
+      if (isQAAgent) {
+        console.log('[useInitializeSendReportMCP] Skipping installation for QA Agent');
+        return;
+      }
+
       // Only install once
       if (installed.current) return;
 
@@ -72,11 +84,22 @@ export const useInitializeSendReportMCP = () => {
     };
 
     installSendReportMCP();
-  }, [installedPlugin]);
+  }, [installedPlugin, isQAAgent]);
 
   // Ensure the plugin is always enabled (runs every time currentPlugins changes)
   useEffect(() => {
     const ensureEnabled = async () => {
+      // Skip enabling for QA Agent
+      if (isQAAgent) {
+        console.log('[useInitializeSendReportMCP] Skipping enable for QA Agent');
+        // If it's enabled, disable it
+        if (currentPlugins.includes(SEND_REPORT_MCP_IDENTIFIER)) {
+          console.log('[useInitializeSendReportMCP] Disabling Send Report MCP plugin for QA Agent');
+          await useAgentStore.getState().togglePlugin(SEND_REPORT_MCP_IDENTIFIER, false);
+        }
+        return;
+      }
+
       // Only enable if plugin is installed
       if (!installedPlugin) {
         console.log('[useInitializeSendReportMCP] Plugin not installed yet, skipping enable check');
@@ -103,5 +126,5 @@ export const useInitializeSendReportMCP = () => {
     };
 
     ensureEnabled();
-  }, [installedPlugin, currentPlugins]);
+  }, [installedPlugin, currentPlugins, isQAAgent]);
 };
