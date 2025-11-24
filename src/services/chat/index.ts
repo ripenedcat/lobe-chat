@@ -115,7 +115,7 @@ class ChatService {
     // Add collection and checkpoint week information to system role
     let systemRole = agentConfig.systemRole;
     if (userEmail) {
-      const emailContext = `\n\n[System Context: Current user email is "${userEmail}"]`;
+      const emailContext = `\n\n[System Context: Current logged in user's email is "${userEmail}"]`;
       systemRole = systemRole ? systemRole + emailContext : emailContext;
     }
     if (agentConfig.collection) {
