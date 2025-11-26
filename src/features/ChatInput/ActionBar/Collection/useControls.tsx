@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useAgentStore } from '@/store/agent';
 import { agentSelectors } from '@/store/agent/selectors';
 
-const COLLECTION_OPTIONS = ['azure_monitor', 'test_monitor'] as const;
+const COLLECTION_OPTIONS = ['azure_monitor', 'azure_automation'] as const;
 
 export type CollectionOption = (typeof COLLECTION_OPTIONS)[number];
 
