@@ -18,9 +18,9 @@ export const MilvusMCPTool: LobeTool = {
     identifier: MILVUS_MCP_IDENTIFIER,
     meta: {
       avatar: '📦',
-      description: 'Search and retrieve information from Milvus Knowledge Database',
+      description: 'Search and retrieve information from Milvus Knowledge Base',
       tags: ['knowledge-base', 'search', 'database'],
-      title: 'Milvus Knowledge Database',
+      title: 'Milvus Knowledge Base',
     },
     systemRole: '',
     type: 'default',
