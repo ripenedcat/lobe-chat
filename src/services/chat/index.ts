@@ -112,6 +112,10 @@ class ChatService {
     const userStoreState = getUserStoreState();
     const userEmail = userProfileSelectors.email(userStoreState);
 
+    // Get current session to check agent title
+    const sessionStoreState = getSessionStoreState();
+    const currentAgentTitle = sessionMetaSelectors.currentAgentTitle(sessionStoreState);
+
     // Add collection and checkpoint week information to system role
     let systemRole = agentConfig.systemRole;
     if (userEmail) {
@@ -122,7 +126,8 @@ class ChatService {
       const collectionContext = `\n\n[System Context: Current knowledge base collection is "${agentConfig.collection}"]`;
       systemRole = systemRole ? systemRole + collectionContext : collectionContext;
     }
-    if (agentConfig.checkpointWeek) {
+    // Only add checkpoint week context for Checkpoint Agent
+    if (agentConfig.checkpointWeek && currentAgentTitle === 'Checkpoint Agent') {
       const checkpointWeekContext = `\n\n[System Context: Current checkpoint week is "${agentConfig.checkpointWeek}"]`;
       systemRole = systemRole ? systemRole + checkpointWeekContext : checkpointWeekContext;
     }
